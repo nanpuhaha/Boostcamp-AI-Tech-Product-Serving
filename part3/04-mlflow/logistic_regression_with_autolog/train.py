@@ -20,5 +20,5 @@ if __name__ == "__main__":
         lr.fit(X, y)
 
     score = lr.score(X, y)
-    print("Score: %s" % score)
+    print(f"Score: {score}")
    

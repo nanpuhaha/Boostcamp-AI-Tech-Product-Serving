@@ -32,7 +32,7 @@ class Order(BaseModel):
 
     @property
     def bill(self):
-        return sum([product.price for product in self.products])
+        return sum(product.price for product in self.products)
 
     def add_product(self, product: Product):
         if product.id in [existing_product.id for existing_product in self.products]:
@@ -61,9 +61,7 @@ async def get_orders() -> List[Order]:
 @app.get("/order/{order_id}", description="Order 정보를 가져옵니다")
 async def get_order(order_id: UUID) -> Union[Order, dict]:
     order = get_order_by_id(order_id=order_id)
-    if not order:
-        return {"message": "주문 정보를 찾을 수 없습니다"}
-    return order
+    return order or {"message": "주문 정보를 찾을 수 없습니다"}
 
 
 def get_order_by_id(order_id: UUID) -> Optional[Order]:
@@ -112,14 +110,10 @@ def update_order_by_id(order_id: UUID, order_update: OrderUpdate) -> Optional[Or
 async def update_order(order_id: UUID, order_update: OrderUpdate):
     updated_order = update_order_by_id(order_id=order_id, order_update=order_update)
 
-    if not updated_order:
-        return {"message": "주문 정보를 찾을 수 없습니다"}
-    return updated_order
+    return updated_order or {"message": "주문 정보를 찾을 수 없습니다"}
 
 
 @app.get("/bill/{order_id}", description="계산을 요청합니다")
 async def get_bill(order_id: UUID):
     found_order = get_order_by_id(order_id=order_id)
-    if not found_order:
-        return {"message": "주문 정보를 찾을 수 없습니다"}
-    return found_order.bill
+    return found_order.bill if found_order else {"message": "주문 정보를 찾을 수 없습니다"}

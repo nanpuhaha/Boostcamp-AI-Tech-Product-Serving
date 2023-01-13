@@ -22,14 +22,14 @@ def main():
 
     with open("config.yaml") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
-    
+
 
     model = load_model()
     model.eval()
 
-    uploaded_file = st.file_uploader("Choose an image", type=["jpg", "jpeg","png"])
-
-    if uploaded_file:
+    if uploaded_file := st.file_uploader(
+        "Choose an image", type=["jpg", "jpeg", "png"]
+    ):
         image_bytes = uploaded_file.getvalue()
         image = Image.open(io.BytesIO(image_bytes))
 

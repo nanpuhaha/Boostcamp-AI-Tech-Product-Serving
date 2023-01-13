@@ -149,9 +149,7 @@ if __name__ == "__main__":
     try:
         invalid_dataclass_model_input = ModelInput02(**INVALID_INPUT)  # Error
     except ValidationError as exc:
-        print("dataclass model input validation error", str(exc))
-        pass
-
+        print("dataclass model input validation error", exc)
     from pydantic import ValidationError
 
     valid_pydantic_model_input = ModelInput03(**VALID_INPUT)
@@ -159,7 +157,6 @@ if __name__ == "__main__":
         invalid_pydantic_model_input = ModelInput03(**INVALID_INPUT)  # error
     except ValidationError as exc:
         print("pydantic model input validation error: ", exc.json())
-        pass
 
     # Expected:
     # dataclass model input validation error 올바르지 않은 input 입니다
