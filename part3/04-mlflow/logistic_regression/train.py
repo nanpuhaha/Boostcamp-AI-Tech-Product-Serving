@@ -15,8 +15,8 @@ if __name__ == "__main__":
     lr.fit(X, y)
 
     score = lr.score(X, y)
-    print("Score: %s" % score)
-   
+    print(f"Score: {score}")
+
     mlflow.log_param("penalty", penalty)
     mlflow.log_param("l1_ratio", l1_ratio)
     mlflow.log_metric("score", score)

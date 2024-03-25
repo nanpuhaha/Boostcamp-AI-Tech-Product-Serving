@@ -55,10 +55,9 @@ class BigqueryHandler(StreamHandler):
                 json_message["created"], tz=pytz.timezone("Asia/Seoul")
             ),
         )
-        errors = self.bigquery_client.insert_rows_json(
+        if errors := self.bigquery_client.insert_rows_json(
             self.config.table, [json.loads(log_input.json())]
-        )
-        if errors:
+        ):
             print(errors)  # 에러가 발생해도 Logging이 정상적으로 동작하게 하기 위해, 별도의 에러 핸들링을 추가하지 않습니다
 
 

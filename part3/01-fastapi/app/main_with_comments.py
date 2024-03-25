@@ -34,7 +34,7 @@ class Order(BaseModel):
 
     @property
     def bill(self):
-        return sum([product.price for product in self.products])
+        return sum(product.price for product in self.products)
 
     def add_product(self, product: Product):
         # add_product는 Product를 인자로 받아서, 해당 id가 이미 존재하는지 체크 => 없다면 products 필드에 추가
@@ -61,9 +61,7 @@ async def get_order(order_id: UUID) -> Union[Order, dict]:
     # order_id를 기반으로 order를 가져온다
     order = get_order_by_id(order_id=order_id)
     # 만약 get_order_by_id에서 아무런 데이터가 없다면? 빈 리스트가 나오면?
-    if not order:
-        return {"message": "주문 정보를 찾을 수 없습니다"}
-    return order
+    return order or {"message": "주문 정보를 찾을 수 없습니다"}
 
 
 def get_order_by_id(order_id: UUID) -> Optional[Order]:
@@ -127,17 +125,13 @@ def update_order_by_id(order_id: UUID, order_update: OrderUpdate) -> Optional[Or
 async def update_order(order_id: UUID, order_update: OrderUpdate):
     updated_order = update_order_by_id(order_id=order_id, order_update=order_update)
 
-    if not updated_order:
-        return {"message": "주문 정보를 찾을 수 없습니다"}
-    return updated_order
+    return updated_order or {"message": "주문 정보를 찾을 수 없습니다"}
 
 
 @app.get("/bill/{order_id}", description="계산을 요청합니다")
 async def get_bill(order_id: UUID):
     found_order = get_order_by_id(order_id=order_id)
-    if not found_order:
-        return {"message": "주문 정보를 찾을 수 없습니다"}
-    return found_order.bill
+    return found_order.bill if found_order else {"message": "주문 정보를 찾을 수 없습니다"}
 
 
 # TODO: 주문 구현, 상품 구현, 결제 구현

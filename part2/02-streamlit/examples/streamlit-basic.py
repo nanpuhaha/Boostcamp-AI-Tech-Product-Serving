@@ -16,14 +16,10 @@ if st.button("버튼이 클릭되면"):
 if st.button("버튼이 클릭되면2"):
     st.write("클릭 후 보이는 메세지2!")
 
-checkbox_btn = st.checkbox('체크박스 버튼')
-
-if checkbox_btn:
+if checkbox_btn := st.checkbox('체크박스 버튼'):
     st.write('체크박스 버튼 클릭!')
 
-checkbox_btn2 = st.checkbox('Checkbox Button2', value=True)
-
-if checkbox_btn2:
+if checkbox_btn2 := st.checkbox('Checkbox Button2', value=True):
     st.write('Button2')
 
 
